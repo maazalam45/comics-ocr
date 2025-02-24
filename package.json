@@ -12,13 +12,20 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.4.4",
+    "@tanstack/react-query": "^5.66.8",
+    "@types/lodash": "^4.17.15",
     "jszip": "^3.10.1",
+    "lodash": "^4.17.21",
     "next": "15.1.7",
+    "next-auth": "^4.24.5",
+    "query-string": "^8.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-dropzone": "^14.3.5"
+    "react-dropzone": "^14.3.5",
+    "react-toastify": "^11.0.3"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.66.1",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
