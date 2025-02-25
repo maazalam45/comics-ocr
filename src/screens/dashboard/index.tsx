@@ -45,7 +45,7 @@ export default function Dasboard() {
     file: File;
   }) => {
     try {
-      const response = await createComic.mutateAsync({
+      const response: any = await createComic.mutateAsync({
         data: {
           dictionary: comic.file,
           language_from: comic.language,
@@ -54,6 +54,9 @@ export default function Dasboard() {
       });
       toast.success("Comic created successfully", { position: "top-right" });
       toggleCreateNew();
+      if (response?.id) {
+        router.push(`/upload-comic/${response.id}`);
+      }
     } catch (error) {
       console.error("Error creating comic:", error);
     }
