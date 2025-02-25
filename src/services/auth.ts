@@ -11,11 +11,7 @@ export async function login({
   return service({
     method: "POST",
     noAuth: true,
-    formData: true,
-    headers: {
-      accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
+    urlencoded: true,
     url: `/user/signin/`,
     body: {
       email,

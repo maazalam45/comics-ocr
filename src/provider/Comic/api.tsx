@@ -7,26 +7,38 @@ export async function listing(
 ): Promise<Comic.ListingResponse> {
   return service({
     method: "GET",
-    headers: { host: "44.204.193.108:8000" },
-    url: ENDPOINTS.COMICS,
-    queryParams: { key: props?.id },
+    url: ENDPOINTS.COMICS + (props?.id ? `/${props.id}` : ""),
   });
 }
-// export async function get(
-//   payload: Cart.CreateAPIPayload,
-// ): Promise<Cart.CreateResponse> {
-//   return service({
-//     url: ENDPOINTS.CART,
-//     method: "POST",
-//     body: payload.data,
-//   });
-// }
+export async function createComic(
+  payload: Comic.CreateAPIMutationPayload
+): Promise<Comic.CreateResponse> {
+  return service({
+    formData: true,
+    url: ENDPOINTS.COMICS,
+    method: "POST",
+    body: payload.data,
+  });
+}
+export async function processComic(
+  payload: Comic.CreateAPIMutationPayload
+): Promise<Comic.CreateResponse> {
+  return service({
+    // formData: true,
+    url: ENDPOINTS.PROCESS_COMIC + `/${payload.data.id}`,
+    method: "POST",
+    body: payload.data,
+  });
+}
 
-// export async function Delete(
-//   payload: Cart.DeleteAPIPayload,
-// ): Promise<Cart.DeleteResponse> {
-//   return service({
-//     url: `${ENDPOINTS.CART}/${payload.data.id}`,
-//     method: "DELETE",
-//   });
-// }
+export async function uploadComic(
+  payload: Comic.CreateAPIMutationPayload
+): Promise<Comic.CreateResponse> {
+  console.log(payload);
+  return service({
+    formData: true,
+    url: ENDPOINTS.UPLOAD_MEDIA + `/${payload.data.id}`,
+    method: "POST",
+    body: payload.data,
+  });
+}

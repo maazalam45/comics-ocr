@@ -19,3 +19,11 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+export const statusColors: any = {
+  Ready_to_upload: "success",
+  Ready_to_process: "info",
+  Processing: "warning",
+  Processed: "primary",
+  Failed: "error",
+};

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { queryClient, STORAGE_KEYS } from "@/others/constants";
 import { useRouter } from "next/navigation";
-import { listing } from "./api";
+import { createComic, listing, processComic, uploadComic } from "./api";
 import { Comic } from "./types";
 
 const KEY = "COMIC";
@@ -11,24 +11,29 @@ export function getKeyFromProps(props: any, type: "LISTING"): string[] {
   return key;
 }
 
-const useComicDetails = (props: any) => {
-  const getComic = useQuery<Comic.CreateAPIMutationPayload>({
+export const useComicDetails = (props: any) => {
+  return useQuery<Comic.ListingResponse>({
     queryKey: [STORAGE_KEYS.USER, getKeyFromProps(props, "LISTING")],
-    queryFn: (e: any) => listing(e),
+    queryFn: () => listing(props),
     enabled: true,
     retry: false,
   });
-  // const { mutate: logout, isPending } = useMutation({
-  //   mutationFn: () => logoutAction(),
-  //   onSuccess: () => {
-  //     queryClient.clear();
-  //     replace("/");
-  //   },
-  // });
-
-  // const isLoading = isUserLoading || isPending;
-
-  return getComic;
 };
-
-export default useComicDetails;
+export const useCreateComic = (props: any) => {
+  return useMutation({
+    mutationFn: (payload: any) => createComic(payload),
+    onSettled: () => {
+      queryClient.invalidateQueries([STORAGE_KEYS.USER, KEY] as any);
+    },
+  });
+};
+export const useProcessComic = (props: any) => {
+  return useMutation({
+    mutationFn: (payload: any) => processComic(payload),
+  });
+};
+export const useUploadComic = (props: any) => {
+  return useMutation({
+    mutationFn: (payload: any) => uploadComic(payload),
+  });
+};

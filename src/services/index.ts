@@ -6,18 +6,19 @@ import { PUBLIC_API_URL } from "../../config";
 const API_URL = PUBLIC_API_URL;
 
 interface IDefaultHeadersProps {
-  medium: string;
   "Content-Type"?: string; // Content-Type is optional to allow FormData requests
   Authorization?: string;
+  accept?: string;
 }
 
 const defaultHeaders: IDefaultHeadersProps = {
-  medium: "platform-web",
+  accept: "application/json",
   "Content-Type": "application/json", // Default Content-Type for JSON requests
 };
 
 export function setAuthenticationHeader(token: string): void {
   localStorage.setItem("auth", "true");
+  localStorage.setItem("token", `Token ${token}`);
   defaultHeaders.Authorization = `Token ${token}`;
 }
 
@@ -37,6 +38,7 @@ interface IAPArgs {
   queryParams?: Record<string, any>;
   noAuth?: boolean;
   formData?: boolean;
+  urlencoded?: boolean;
   baseDomain?: string;
   parseJSON?: boolean;
 }
@@ -49,11 +51,14 @@ async function service(args: IAPArgs): Promise<any> {
     headers = {},
     queryParams = null,
     formData = false,
+    urlencoded = false,
     baseDomain,
     parseJSON = true,
     ...extraProps
   } = args;
-
+  if (!defaultHeaders?.Authorization) {
+    defaultHeaders.Authorization = localStorage.getItem("token") as any;
+  }
   const finalHeaders = { ...defaultHeaders, ...headers };
 
   let requestBody: any = null;
@@ -61,6 +66,12 @@ async function service(args: IAPArgs): Promise<any> {
   // 🔹 Handle FormData requests
   if (formData) {
     requestBody = new FormData();
+    Object.keys(body).forEach((key) => {
+      requestBody.append(key, body[key]);
+    });
+    delete finalHeaders["Content-Type"]; // Let the browser set the correct Content-Type
+  } else if (urlencoded) {
+    requestBody = new URLSearchParams();
     Object.keys(body).forEach((key) => {
       requestBody.append(key, body[key]);
     });

@@ -19,7 +19,10 @@ export function getKeyFromProps(props: any, type: "LISTING"): string[] {
 export function useComicDetails(
   props?: Comic.ListingAPIPayload
 ): UseQueryResult<Comic.ListingResponse> {
-  return useQuery(getKeyFromProps(props, "LISTING"), () => api.listing(props));
+  return useQuery({
+    queryKey: getKeyFromProps(props, "LISTING"),
+    queryFn: () => api.listing(props),
+  });
 }
 
 // export function useCreateCart(props: Cart.CreatePorps = {}): UseMutationResult<
