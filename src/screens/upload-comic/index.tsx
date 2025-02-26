@@ -125,7 +125,6 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
       setFiles([]);
       setPreviews([]);
 
-      console.log("All comics uploaded successfully.");
       toast.success("Images uploaded successfully", { position: "top-right" });
     } catch (error) {
       console.error("Error uploading comic:", error);
@@ -143,7 +142,6 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
         },
       });
       getComic.refetch();
-      console.log("Comic processing started successfully.");
       toast.success("Comic processing started successfully", {
         position: "top-right",
       });

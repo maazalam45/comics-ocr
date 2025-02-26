@@ -10,6 +10,15 @@ export async function listing(
     url: ENDPOINTS.COMICS + (props?.id ? `/${props.id}` : ""),
   });
 }
+export async function downloadCsv(
+  props?: Comic.ListingAPIPayload
+): Promise<Comic.ListingResponse> {
+  return service({
+    parseJSON: false,
+    method: "GET",
+    url: ENDPOINTS.EXAMPLE_DICTIONARY,
+  });
+}
 export async function createComic(
   payload: Comic.CreateAPIMutationPayload
 ): Promise<Comic.CreateResponse> {
@@ -34,7 +43,6 @@ export async function processComic(
 export async function uploadComic(
   payload: Comic.CreateAPIMutationPayload
 ): Promise<Comic.CreateResponse> {
-  console.log(payload);
   return service({
     formData: true,
     url: ENDPOINTS.UPLOAD_MEDIA + `/${payload.data.id}`,

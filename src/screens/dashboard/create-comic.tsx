@@ -14,6 +14,9 @@ import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDropzone } from "react-dropzone";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SimCardDownloadIcon from "@mui/icons-material/SimCardDownload";
+import { useSampleCsv } from "@/provider/Comic";
+import { toast } from "react-toastify";
 
 interface CreateComicProps {
   createNewComic: (comic: {
@@ -32,6 +35,7 @@ const CreateComic: React.FC<CreateComicProps> = ({
   toggleCreateNew,
   isBackAvalaible,
 }) => {
+  const downloadCsv = useSampleCsv({});
   const [selectedFont, setSelectedFont] = useState("");
   const [selectedLanguage, setSelectedLanguage] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -72,7 +76,7 @@ const CreateComic: React.FC<CreateComicProps> = ({
     const reader = new FileReader();
     reader.onload = (event) => {
       if (event.target?.result) {
-        console.log("CSV File Content:", event.target.result as string);
+        // console.log("CSV File Content:", event.target.result as string);
       }
     };
     reader.readAsText(file);
@@ -103,12 +107,31 @@ const CreateComic: React.FC<CreateComicProps> = ({
         language: selectedLanguage,
         file: file!,
       });
-      console.log("Comic created successfully");
+      //   console.log("Comic created successfully");
     } catch (error) {
       console.error("Error creating comic:", error);
     }
   };
 
+  const downloadSampleCSV = async () => {
+    try {
+      await downloadCsv.mutateAsync({}).then(async (response) => {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `Sample.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+        toast.success(`Sample downloaded successfully`);
+      });
+      //   console.log("Sample CSV downloaded:", response);
+    } catch (error) {
+      console.error("Error downloading sample CSV:", error);
+    }
+  };
   return (
     <Box>
       <Box
@@ -129,6 +152,20 @@ const CreateComic: React.FC<CreateComicProps> = ({
             Go back
           </Button>
         )}
+        <Button
+          variant="contained"
+          endIcon={<SimCardDownloadIcon />}
+          onClick={downloadSampleCSV}
+          sx={{
+            position: "absolute",
+            top: 30,
+            right: "16%",
+            textTransform: "none",
+          }}
+          disabled={downloadCsv.isPending}
+        >
+          Sample .csv
+        </Button>
         <Typography
           variant="h5"
           sx={{ textAlign: "center", fontWeight: "bold" }}
