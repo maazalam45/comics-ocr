@@ -1,18 +1,9 @@
 "use client";
-import { ReactNode, useEffect } from "react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
+const LandingPage = dynamic(() => import("./landing-page"), {
+  ssr: false,
+});
 export default function Home() {
-  const { status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (localStorage.getItem("auth")) {
-      router.push("/dashboards", { scroll: false });
-    } else {
-      router.push("/sign-in", { scroll: false });
-    }
-  }, [status]);
-  return <></>;
+  return <LandingPage />;
 }
