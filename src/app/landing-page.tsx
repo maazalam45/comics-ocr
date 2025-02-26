@@ -1,10 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function LandingPage() {
-  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -13,6 +11,6 @@ export default function LandingPage() {
     } else {
       router.push("/sign-in", { scroll: false });
     }
-  }, [status]);
+  }, []);
   return <div></div>;
 }
