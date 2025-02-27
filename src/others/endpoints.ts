@@ -5,4 +5,5 @@ export enum ENDPOINTS {
   UPLOAD_MEDIA = "/comic/upload-media",
   EXAMPLE_DICTIONARY = "/comic/example-dictionary",
   SIGNOUT = "/user/logout/",
+  COMIC_DELETE = "/comic/delete",
 }

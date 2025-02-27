@@ -29,6 +29,15 @@ export async function createComic(
     body: payload.data,
   });
 }
+export async function deleteComic(
+  payload: Comic.CreateAPIMutationPayload
+): Promise<Comic.CreateResponse> {
+  return service({
+    parseJSON: false,
+    url: ENDPOINTS.COMIC_DELETE+ `/${payload.data.id}`,
+    method: "DELETE",
+  });
+}
 export async function processComic(
   payload: Comic.CreateAPIMutationPayload
 ): Promise<Comic.CreateResponse> {
