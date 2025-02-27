@@ -1,6 +1,6 @@
 "use client";
-import Dasboard from "@/screens/dashboard";
+import Dashboard from "@/screens/dashboard";
 
 export default function Home() {
-  return <Dasboard />;
+  return <Dashboard />;
 }

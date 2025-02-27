@@ -137,7 +137,7 @@ const CreateComic: React.FC<CreateComicProps> = ({
       <Box
         sx={{
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "space-between",
           alignItems: "center",
           gap: 2,
         }}
@@ -147,7 +147,7 @@ const CreateComic: React.FC<CreateComicProps> = ({
             variant="contained"
             startIcon={<ArrowBackIcon />}
             onClick={toggleCreateNew}
-            sx={{ position: "absolute", top: 30, left: "16%" }}
+            // sx={{ position: "absolute", top: 30, left: "16%" }}
           >
             Go back
           </Button>
@@ -157,15 +157,16 @@ const CreateComic: React.FC<CreateComicProps> = ({
           endIcon={<SimCardDownloadIcon />}
           onClick={downloadSampleCSV}
           sx={{
-            position: "absolute",
-            top: 30,
-            right: "16%",
+            // position: "absolute",
+            // top: 30,
+            // right: "16%",
             textTransform: "none",
           }}
           disabled={downloadCsv.isPending}
         >
           Sample .csv
         </Button>
+      </Box>
         <Typography
           variant="h5"
           sx={{ textAlign: "center", fontWeight: "bold" }}
@@ -175,7 +176,6 @@ const CreateComic: React.FC<CreateComicProps> = ({
         <Typography sx={{ textAlign: "center", color: "#b0b0b0" }}>
           Manage your comics and translations here.
         </Typography>
-      </Box>
       <Box>
         {/* Font Selector */}
         <Typography sx={{ mb: 1 }}>Select Font:</Typography>

@@ -12,6 +12,7 @@ import {
   Card,
   CardContent,
   Chip,
+  IconButton,
 } from "@mui/material";
 import { useDropzone } from "react-dropzone";
 import JSZip from "jszip"; // Import ZIP processing library
@@ -19,15 +20,19 @@ import { useRouter } from "next/navigation";
 import { useComicDetails, useCreateComic } from "@/provider/Comic";
 import CreateComic from "./create-comic";
 import AddIcon from "@mui/icons-material/Add";
+import LogoutIcon from '@mui/icons-material/Logout';
 import { toast } from "react-toastify";
-import { statusColors } from "@/others/constants";
+import { ComicCardButtonText, statusColors } from "@/others/constants";
 import ComicChip from "@/components/chip";
+import { logout } from "@/services/auth";
 
-export default function Dasboard() {
+export default function Dashboard() {
   const getComic = useComicDetails({});
   const createComic = useCreateComic({});
   const [createNew, setCreateNew] = useState(false);
   const router = useRouter();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("auth")) {
@@ -62,6 +67,26 @@ export default function Dasboard() {
     }
   };
 
+  // Logout function
+  const handleLogout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    try {
+      const response = await logout();      
+      if (response) {
+        localStorage.removeItem("auth");
+        localStorage.removeItem("token");
+        toast.success("Logout Successful", { position: "top-right" });
+        router.push("/sign-in");
+      }
+    } catch (error: any) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Container
       maxWidth="md"
@@ -73,6 +98,30 @@ export default function Dasboard() {
         mt: 2,
       }}
     >
+      {/* logout button */}
+      <IconButton 
+        color="primary" 
+        aria-label="delete" 
+        sx={{ 
+          position: {sm: "relative", md: "fixed"},
+          top: {xs: 0, md: 30}, 
+          right: {xs: 0, md: 30}, 
+          backgroundColor: "#ef5350", 
+          color: "white", 
+          padding: "12px 12px", 
+          fontSize: "12px", 
+          fontWeight: "bold", 
+          borderRadius: "50px", 
+          float: "right",
+          marginBottom: {xs: "10px", md: "0px"},
+          "&:hover": { 
+            backgroundColor: "#f44336" 
+          },
+        }}
+        onClick={handleLogout}
+      >
+        <LogoutIcon />
+      </IconButton>
       {getComic.isLoading ? (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />
@@ -84,6 +133,7 @@ export default function Dasboard() {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              width: "100%",
             }}
           >
             <Typography
@@ -150,7 +200,7 @@ export default function Dasboard() {
                     "&:hover": { backgroundColor: "#1565c0" },
                   }}
                 >
-                  Upload Comic
+                  {ComicCardButtonText(comic.comic_status)}
                 </Button>
               </CardContent>
             </Card>

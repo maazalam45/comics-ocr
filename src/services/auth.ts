@@ -60,3 +60,12 @@ export async function googleAuth({ idToken }: { idToken: string }) {
     },
   });
 }
+
+// Logout
+export async function logout() {
+  return service({
+    parseJSON: false,
+    method: "DELETE",
+    url: "/user/logout/",
+  });
+}
