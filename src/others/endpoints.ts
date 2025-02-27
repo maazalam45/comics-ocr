@@ -4,4 +4,5 @@ export enum ENDPOINTS {
   PROCESS_COMIC = "/comic/start-processing",
   UPLOAD_MEDIA = "/comic/upload-media",
   EXAMPLE_DICTIONARY = "/comic/example-dictionary",
+  SIGNOUT = "/user/logout/",
 }
