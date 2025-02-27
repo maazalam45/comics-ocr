@@ -20,7 +20,7 @@ import { useComicDetails, useCreateComic } from "@/provider/Comic";
 import CreateComic from "./create-comic";
 import AddIcon from "@mui/icons-material/Add";
 import { toast } from "react-toastify";
-import { statusColors } from "@/others/constants";
+import { ComicCardButtonText, statusColors } from "@/others/constants";
 import ComicChip from "@/components/chip";
 
 export default function Dasboard() {
@@ -150,7 +150,7 @@ export default function Dasboard() {
                     "&:hover": { backgroundColor: "#1565c0" },
                   }}
                 >
-                  Upload Comic
+                  {ComicCardButtonText(comic.comic_status)}
                 </Button>
               </CardContent>
             </Card>
