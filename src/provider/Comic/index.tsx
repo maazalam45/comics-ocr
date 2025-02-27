@@ -3,6 +3,7 @@ import { queryClient, STORAGE_KEYS } from "@/others/constants";
 import { useRouter } from "next/navigation";
 import {
   createComic,
+  deleteComic,
   downloadCsv,
   listing,
   processComic,
@@ -48,5 +49,13 @@ export const useProcessComic = (props: any) => {
 export const useUploadComic = (props: any) => {
   return useMutation({
     mutationFn: (payload: any) => uploadComic(payload),
+  });
+};
+export const useDeleteComic = (props: any) => {
+  return useMutation({
+    mutationFn: (payload: any) => deleteComic(payload),
+    onSettled: () => {
+      queryClient.invalidateQueries([STORAGE_KEYS.USER, KEY] as any);
+    },
   });
 };

@@ -17,7 +17,7 @@ import {
 import { useDropzone } from "react-dropzone";
 import JSZip from "jszip"; // Import ZIP processing library
 import { useRouter } from "next/navigation";
-import { useComicDetails, useCreateComic } from "@/provider/Comic";
+import { useComicDetails, useCreateComic, useDeleteComic } from "@/provider/Comic";
 import CreateComic from "./create-comic";
 import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -25,14 +25,18 @@ import { toast } from "react-toastify";
 import { ComicCardButtonText, statusColors } from "@/others/constants";
 import ComicChip from "@/components/chip";
 import { logout } from "@/services/auth";
+import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteDialog from "@/components/delete-modal";
 
 export default function Dashboard() {
   const getComic = useComicDetails({});
   const createComic = useCreateComic({});
+  const deleteComic = useDeleteComic({});
   const [createNew, setCreateNew] = useState(false);
   const router = useRouter();
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
+    const [comicDeleteId, setComicDeleteId] = useState(undefined);
 
   useEffect(() => {
     if (!localStorage.getItem("auth")) {
@@ -70,7 +74,6 @@ export default function Dashboard() {
   // Logout function
   const handleLogout = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
     try {
       const response = await logout();      
@@ -82,9 +85,23 @@ export default function Dashboard() {
       }
     } catch (error: any) {
       setError(error);
-    } finally {
-      setLoading(false);
     }
+  };
+  const toggleDeleteModal = (id?: any)=>{
+    id ? setComicDeleteId(id):setComicDeleteId(undefined)
+    setOpenDelete(!openDelete)
+  }
+  const handleDelete = async () => {
+    setError("");
+    try {
+      const response = await deleteComic.mutateAsync({data: {id:comicDeleteId}});      
+      if (response) {
+        toast.success("Logout Successful", { position: "top-right" });
+        toggleDeleteModal()
+      }
+    } catch (error: any) {
+      setError(error);
+    } 
   };
 
   return (
@@ -122,7 +139,7 @@ export default function Dashboard() {
       >
         <LogoutIcon />
       </IconButton>
-      {getComic.isLoading ? (
+      {getComic.isLoading || getComic.isFetching ? (
         <Box sx={{ textAlign: "center" }}>
           <CircularProgress />
         </Box>
@@ -184,7 +201,26 @@ export default function Dashboard() {
                   }}
                 >
                   <Typography variant="h6">{comic.font.name}</Typography>
-                  <ComicChip comic_status={comic?.comic_status} />
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    <ComicChip comic_status={comic?.comic_status} />
+                    {/* Delete Comic */}
+                    <IconButton 
+                      color="primary" 
+                      aria-label="delete-comic" 
+                      sx={{
+                        backgroundColor: "#ef5350", 
+                        color: "white",
+                        fontWeight: "bold", 
+                        borderRadius: "50px", 
+                        "&:hover": { 
+                          backgroundColor: "#f44336" 
+                        },
+                      }}
+                      onClick={()=> toggleDeleteModal(comic.id)}
+                    >
+                      <DeleteIcon fontSize="small"/>
+                    </IconButton>
+                  </Box>
                 </Box>
                 <Typography variant="body2" sx={{ color: "#bbb", mb: 1 }}>
                   Language: {comic.language_from === 0 ? "English" : "Italian"}
@@ -214,6 +250,7 @@ export default function Dashboard() {
           toggleCreateNew={toggleCreateNew}
         />
       )}
+      <DeleteDialog openDelete={openDelete} handleDelete={handleDelete} toggleDeleteModal={toggleDeleteModal}/>
     </Container>
   );
 }
