@@ -203,7 +203,7 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
             onClick={() => {
               router.back();
             }}
-            sx={{ position: "absolute", top: 30, left: "17%" }}
+            // sx={{ position: "absolute", top: 30, left: "17%" }}
           >
             Go back
           </Button>
