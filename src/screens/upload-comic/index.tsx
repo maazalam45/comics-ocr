@@ -216,9 +216,9 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
           {/* Comic Details */}
           {getComic.data && (
             <Box sx={{ mb: 3, p: 2, borderRadius: 2, background: "#282828" }}>
-              <Typography variant="subtitle1">
+              {/* <Typography variant="subtitle1">
                 Comic ID: {getComic.data?.id}
-              </Typography>
+              </Typography> */}
               {getComic.data.est_mins ? (
                 <Typography variant="subtitle1">
                   Estimated processing time: {getComic.data.est_mins} minutes

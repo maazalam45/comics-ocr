@@ -80,7 +80,16 @@ export default function LoginPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            sx={{ mt: 2, background: "#282828", input: { color: "white" } }}
+            sx={{ 
+              mt: 2, background: "#282828", color: "#fff", 
+              input: { color: "#dfdfdf" }, 
+              '.MuiFormLabel-root': {
+                color: '#797979',
+              },
+              '.Mui-focused' : {
+                color: '#1976d2',
+              } 
+            }}
           />
 
           <TextField
@@ -90,7 +99,16 @@ export default function LoginPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            sx={{ mt: 2, background: "#282828", input: { color: "white" } }}
+            sx={{ 
+              mt: 2, background: "#282828", color: "#fff", 
+              input: { color: "#dfdfdf" }, 
+              '& .MuiFormLabel-root': {
+                color: '#797979',
+              },
+              '.Mui-focused' : {
+                color: '#1976d2',
+              } 
+            }}
           />
 
           <Button
