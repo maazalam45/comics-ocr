@@ -87,10 +87,14 @@ export default function Dashboard() {
       setError(error);
     }
   };
+
+  // Delete Modal Toggle 
   const toggleDeleteModal = (id?: any)=>{
     id ? setComicDeleteId(id):setComicDeleteId(undefined)
     setOpenDelete(!openDelete)
   }
+
+  // Delete Comic
   const handleDelete = async () => {
     setError("");
     try {

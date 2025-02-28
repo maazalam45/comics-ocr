@@ -200,7 +200,7 @@ const CreateComic: React.FC<CreateComicProps> = ({
         )}
 
         {/* Language Selector */}
-        <Typography sx={{ mt: 2, mb: 1 }}>Select Language:</Typography>
+        <Typography sx={{ mt: 2, mb: 1 }}>Current Comic Language:</Typography>
         <Select
           value={selectedLanguage}
           onChange={(e) => {
