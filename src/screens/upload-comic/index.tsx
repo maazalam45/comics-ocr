@@ -180,6 +180,15 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
     }
   };
 
+  // Handle back button for navigation
+  const handleBack = () => {
+    if (window.history.length > 2) {
+      router.back();
+    } else {
+      router.push("/dashboard");
+    }
+  };
+
   return (
     <Container
       maxWidth="md"
@@ -200,9 +209,7 @@ const UploadComic: React.FC<{ comicId: number }> = ({ comicId }) => {
           <Button
             variant="contained"
             startIcon={<ArrowBackIcon />}
-            onClick={() => {
-              router.back();
-            }}
+            onClick={handleBack}
             // sx={{ position: "absolute", top: 30, left: "17%" }}
           >
             Go back
